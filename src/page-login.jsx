@@ -52,6 +52,14 @@ export class PageLogin extends React.Component {
       }));
   };
 
+  handleOpenPage = (e) => {
+    e.preventDefault();
+    const page = e.target?.dataset?.page;
+    this.props.setPage(page);
+    const page2 = e.target?.dataset?.page2;
+    this.props.setPage2(page2);
+  };
+
   render() {
     const {
       message,
@@ -101,10 +109,24 @@ export class PageLogin extends React.Component {
             <div className="request-message">{formatCountdown(time)}</div>
           )}
           <div>
-            <a className="links" href="/#">Забыли пароль?</a>
+            <a
+              className="links" 
+              href="/#"
+              onClick={this.handleOpenPage}
+              data-page2="recover-password"
+            >
+              Забыли пароль?
+            </a>
           </div>
           <div>
-            <a className="links" href="/#">Создать аккаунт</a>
+            <a 
+              className="links"
+              href="/#" 
+              onClick={this.handleOpenPage}
+              data-page="registration"
+            >
+              Создать аккаунт
+            </a>
           </div>
         </form>
       </div>

@@ -16,9 +16,9 @@ body,
 }
 
 .page-login {
-  background: #000 url("./image.jpg") no-repeat;
-  background-size: cover;
-  height: 100vh;
+  background:#000 url("./image.jpg") no-repeat;
+  background-size:cover;
+  height:100vh;
 }
 
 .login-form {
