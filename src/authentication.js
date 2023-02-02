@@ -1,7 +1,24 @@
-const users = [
-  { login: "Korgi", password: "Gav" },
-  { login: "Kisa", password: "Mao" },
-];
+const getUsers = () => {
+  try {
+    return JSON.parse(localStorage.getItem("users")) || [];
+  } catch {
+    return [];
+  }
+} 
+
+let users = getUsers(); 
+
+const setUsers = (newUsers) => {
+  localStorage.setItem("users", JSON.stringify(newUsers));
+  users = newUsers;
+} 
+
+if (!users.length) {
+  setUsers([
+    { login: "Korgi", password: "Gav" },
+    { login: "Kisa", password: "Mao" },
+  ]);
+}
 
 export const authentication = (login, password) => new Promise((resolve, reject) => {
   const user = users.find(item => item.login === login && item.password === password);
@@ -23,11 +40,10 @@ export const registration = (login, password) => new Promise((resolve, reject) =
   const message = { message: "REGISTRATION_ERROR" };
   setTimeout(() => {
     if (user) {
-      resolve(message)
+      reject(message)
     } else {
-    users.push(newUser);
-    console.log({ users });
-    reject(newUser);
+      setUsers([...users, newUser]);
+      resolve(newUser);
     }
   }, 1000);
 });
@@ -37,9 +53,9 @@ export const passwordRecovery = (login) => new Promise((resolve, reject) => {
   const message = { message: "NOT_REGISTERED_ERROR" };
   setTimeout(() => {
     if (user) {
-      resolve({ user })
+      resolve(user)
     } else {
-    reject(message);
+      reject(message);
     }
   }, 1000);
 });
