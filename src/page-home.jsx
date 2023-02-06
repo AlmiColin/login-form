@@ -11,9 +11,9 @@ export class PageHome extends React.Component {
     return (
       <div className="page-login layout-center">
         <div className="login-form">
-          <div className="form-group">
-            Привет, {this.props.user.login}
-          </div>
+          <div className = "form-group">          
+            Привет, {this.props.user.login}  
+          </div>                      
           <button
             className="button"
             name="exit"

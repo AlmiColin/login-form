@@ -4,21 +4,21 @@ const getUsers = () => {
   } catch {
     return [];
   }
-} 
+}; 
 
 let users = getUsers(); 
 
 const setUsers = (newUsers) => {
   localStorage.setItem("users", JSON.stringify(newUsers));
   users = newUsers;
-} 
+};
 
 if (!users.length) {
   setUsers([
     { login: "Korgi", password: "Gav" },
     { login: "Kisa", password: "Mao" },
   ]);
-}
+};
 
 export const authentication = (login, password) => new Promise((resolve, reject) => {
   const user = users.find(item => item.login === login && item.password === password);

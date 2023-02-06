@@ -2,28 +2,34 @@ import React from "react";
 import { MESSAGES, REGISTRATION_ERROR } from "./constants";
 import { registration } from "./authentication";
 
+
 export class PageRegistration extends React.Component {
   state = {};
   
+  handleExit = (e) => {
+    this.props.setPage(null);
+  } 
+
   handleSubmit = (e) => {
     e.preventDefault();
-    const { setUser } = this.props;
-    const form = e.target;
+    const form = document.querySelector('form');
     const login = form.elements.login.value;
     const password = form.elements.password.value;
-
+   
     if (!(login && password)) {
       return this.setState({ message: REGISTRATION_ERROR });
     }
 
     registration(login, password)
-        .then((resolve) => {
-        const message = MESSAGES[resolve.message];
-        return this.setState({ message });
+      .then((resolve) => {
+        return this.props.setPage(null); 
       })
-        .catch((newUser) => setUser(newUser))
-  };
-
+      .catch((reject) => {
+        const message = MESSAGES[reject.message];
+        return this.setState({ message });
+      });
+  }
+ 
   render() {
     const {message} = this.state;
     return (
@@ -56,9 +62,19 @@ export class PageRegistration extends React.Component {
           <button
             className="button"
             name="enter"
+            onClick={this.handleSubmit}
           >
             Присоединиться
           </button>
+          <div>
+            <a
+              className="links" 
+              href="/#"
+              onClick={this.handleExit}
+            >
+              Войти
+            </a>
+          </div>
         </form>
       </div>
     );
