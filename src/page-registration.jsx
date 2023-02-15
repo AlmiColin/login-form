@@ -1,37 +1,35 @@
 import React from "react";
-import { MESSAGES, REGISTRATION_ERROR } from "./constants";
+import { REGISTRATION_ERROR } from "./constants";
 import { registration } from "./authentication";
+import { Link } from "react-router-dom";
+import { withNavigate } from "./withNavigate";
 
 
-export class PageRegistration extends React.Component {
+class PageRegistrationComponent extends React.Component {
   state = {};
   
-  handleExit = (e) => {
-    this.props.setPage(null);
-  } 
-
   handleSubmit = (e) => {
     e.preventDefault();
+    const { navigate } = this.props;
     const form = document.querySelector('form');
     const login = form.elements.login.value;
     const password = form.elements.password.value;
    
     if (!(login && password)) {
       return this.setState({ message: REGISTRATION_ERROR });
-    }
+    };
 
     registration(login, password)
-      .then((resolve) => {
-        return this.props.setPage(null); 
+      .then((res) => {
+        navigate("/");
       })
-      .catch((reject) => {
-        const message = MESSAGES[reject.message];
-        return this.setState({ message });
+      .catch((response) => {
+        return this.setState({ message: REGISTRATION_ERROR });
       });
-  }
+  };
  
   render() {
-    const {message} = this.state;
+    const { message } = this.state;
     return (
       <div className="page-login layout-center">
         <form
@@ -67,16 +65,12 @@ export class PageRegistration extends React.Component {
             Присоединиться
           </button>
           <div>
-            <a
-              className="links" 
-              href="/#"
-              onClick={this.handleExit}
-            >
-              Войти
-            </a>
+            <Link className="links" to= {`/`}>Войти</Link>
           </div>
         </form>
       </div>
     );
   };
 };
+
+export const PageRegistration = withNavigate(PageRegistrationComponent);

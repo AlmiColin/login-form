@@ -26,10 +26,9 @@ export const authentication = (login, password) => new Promise((resolve, reject)
     if (user) {
       resolve(user)
     } else {
-      reject({ code: "400", message: "LOGIN ERROR" });
-      // reject({ code: "410", message: "USER BLOCKED" });
+      // reject({ code: "400", message: "LOGIN ERROR" });
+      reject({ code: "410", message: "USER BLOCKED" });
       // reject({ code: "500", message: "SERVER ERROR" });
-      // reject();
     }
   }, 1000);
 });
