@@ -1,0 +1,17 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "login": "Korgi",
+            "password": "Gav",
+            "avatarFile": "korgi.jpg"
+        },
+        {
+            "id": 2,
+            "login": "Kisa",
+            "password": "Mao",
+            "avatarFile": "kisa.jpg"
+        }
+    ],
+    "sessions": {}
+}

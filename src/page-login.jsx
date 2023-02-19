@@ -7,22 +7,22 @@ import { Link } from "react-router-dom"
 const formatCountdown = (timeMs) => {
   const date = new Date(timeMs);
   return date.toUTCString().split(' ')[4];
-};
-
+}
 
 class PageLoginComponent extends React.Component {
   state = {};
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.time) {
+    const { time } = this.state;
+    if (prevState.time !== time && time) {
       const interval = 1000;
       setTimeout(() => {
         const time = this.state.time - interval;
         const isDisabledButton = !!time; 
         this.setState({ time, isDisabledButton });
       }, interval);
-    };
-  };
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -33,19 +33,19 @@ class PageLoginComponent extends React.Component {
 
     if (!(login && password)) {
       return this.setState({ message: LOGIN_ERROR });
-    };
+    }
 
     this.setState({ isLoading: true, isDisabledButton: true });
 
     return authentication(login, password)
       .then(() => navigate("/home-page"))
       .catch((response) => {
-        const isDisabledButton = response?.code === "410";
-        const message = MESSAGES_BY_CODE[response?.code] || UNKNOWN_ERROR;
+        const isDisabledButton = response?.status === 410;
+        const message = MESSAGES_BY_CODE[response?.status] || UNKNOWN_ERROR;
         return {
           isDisabledButton,
           message,
-          time: isDisabledButton ? 10000 : 0,
+          time: (isDisabledButton && +response?.body?.timeout) || 0,
         };
       })
       .then((state) => this.setState({
@@ -54,7 +54,7 @@ class PageLoginComponent extends React.Component {
         isDisabledButton: state?.isDisabledButton || false,
       }));
   };
- 
+  
   render() {
     const {
       message,

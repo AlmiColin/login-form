@@ -4,7 +4,6 @@ import { registration } from "./authentication";
 import { Link } from "react-router-dom";
 import { withNavigate } from "./withNavigate";
 
-
 class PageRegistrationComponent extends React.Component {
   state = {};
   
@@ -17,19 +16,19 @@ class PageRegistrationComponent extends React.Component {
    
     if (!(login && password)) {
       return this.setState({ message: REGISTRATION_ERROR });
-    };
+    }
 
     registration(login, password)
       .then((res) => {
         navigate("/");
       })
-      .catch((response) => {
+      .catch((res) => {
         return this.setState({ message: REGISTRATION_ERROR });
       });
-  };
+  }
  
   render() {
-    const { message } = this.state;
+    const {message} = this.state;
     return (
       <div className="page-login layout-center">
         <form

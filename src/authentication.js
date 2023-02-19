@@ -1,60 +1,41 @@
-const getUsers = () => {
-  try {
-    return JSON.parse(localStorage.getItem("users")) || [];
-  } catch {
-    return [];
+const headers = {
+  'content-type': 'application/json; charset=utf-8',
+};
+
+export const jsonPost = (url, body) => fetch(url, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify(body),
+}).then(res => {
+  const type = res.headers.get('content-type');
+  const method = type && type.includes('json') ? 'json': 'text';
+  return Promise.all([res, res[method]()]);
+})
+.then(([res, body]) => {
+  const { status } = res;
+  if (status !== 200) {
+    return Promise.reject({ status, body });
   }
-}; 
-
-let users = getUsers(); 
-
-const setUsers = (newUsers) => {
-  localStorage.setItem("users", JSON.stringify(newUsers));
-  users = newUsers;
-};
-
-if (!users.length) {
-  setUsers([
-    { login: "Korgi", password: "Gav" },
-    { login: "Kisa", password: "Mao" },
-  ]);
-};
-
-export const authentication = (login, password) => new Promise((resolve, reject) => {
-  const user = users.find(item => item.login === login && item.password === password);
-  setTimeout(() => {
-    if (user) {
-      resolve(user)
-    } else {
-      // reject({ code: "400", message: "LOGIN ERROR" });
-      reject({ code: "410", message: "USER BLOCKED" });
-      // reject({ code: "500", message: "SERVER ERROR" });
-    }
-  }, 1000);
+  return body;
 });
 
-export const registration = (login, password) => new Promise((resolve, reject) => {
-  const user = users.find(item => item.login === login);
-  const newUser = { login, password };
-  const message = { message: "REGISTRATION_ERROR" };
-  setTimeout(() => {
-    if (user) {
-      reject(message)
-    } else {
-      setUsers([...users, newUser]);
-      resolve(newUser);
-    }
-  }, 1000);
+export const authentication = (login, password) => jsonPost('/authentication', {
+  login,
+  password,
 });
 
-export const passwordRecovery = (login) => new Promise((resolve, reject) => {
-  const user = users.find(item => item.login === login);
-  const message = { message: "NOT_REGISTERED_ERROR" };
-  setTimeout(() => {
-    if (user) {
-      resolve(user)
-    } else {
-      reject(message);
-    }
-  }, 1000);
+export const registration = (login, password) => jsonPost('/registration', {
+  login,
+  password,
 });
+
+export const session = () => fetch('/session', {headers})
+  .then(res => {
+    const { status } = res;
+    if (status !== 200) {
+      return Promise.reject(res);
+    }
+    return res.json();
+  });
+
+  export const logout = () => fetch('/logout', {headers});

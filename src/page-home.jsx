@@ -1,19 +1,32 @@
 import React from "react";
+import { logout, session } from "./authentication";
 import { withNavigate } from "./withNavigate";
 
 class PageHomeComponent extends React.Component {
   state = {};
   
-  handleExit = () => this.props.navigate('/');
+  goMainPage = () => this.props.navigate('/');
+  handleExit = () => logout().then(this.goMainPage);
+
+  componentDidMount() {
+    if (!this.state.user) {
+      session()
+        .then(user => this.setState({ user }))
+        .catch(this.goMainPage);
+    }
+  };
 
   render() {
-    const { avatarFile = "default.jpg"} = this.state;
+    if (!this.state.user) {
+     return null;
+    }
+    const { user: { login, avatarFile = "default.jpg"} } = this.state;
     return (
       <div className="page-login layout-center">
         <div className="login-form">
           <div className = "form-group home">      
             <div>
-              <p className = "greeting">Привет, User</p>
+              <p className = "greeting">Привет, {login}</p>
             </div>
               <img class="avatar-image" src={`/avatars/${avatarFile}`} alt = "" />
             <button
