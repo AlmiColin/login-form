@@ -55,6 +55,10 @@ class PageLoginComponent extends React.Component {
       }));
   };
   
+  handleMouseDown = () => {
+    this.setState({ message: null });
+  }
+
   render() {
     const {
       message,
@@ -81,6 +85,7 @@ class PageLoginComponent extends React.Component {
                 className="form-input"
                 name="login"
                 placeholder="Логин"
+                onMouseDown = {this.handleMouseDown}
               />
             </div>
             <div className="form-group">
@@ -89,6 +94,7 @@ class PageLoginComponent extends React.Component {
                 name="password"
                 placeholder="Пароль"
                 type="password"
+                onMouseDown = {this.handleMouseDown}
               />
             </div>
             <button

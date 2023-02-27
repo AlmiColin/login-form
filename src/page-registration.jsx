@@ -27,6 +27,10 @@ class PageRegistrationComponent extends React.Component {
       });
   }
  
+  handleMouseDown = () => {
+    this.setState({ message: null });
+  }
+
   render() {
     const {message} = this.state;
     return (
@@ -46,6 +50,7 @@ class PageRegistrationComponent extends React.Component {
               className="form-input"
               name="login"
               placeholder="Логин"
+              onMouseDown = {this.handleMouseDown}
             />
           </div>
           <div className="form-group">
@@ -54,6 +59,7 @@ class PageRegistrationComponent extends React.Component {
               name="password"
               placeholder="Пароль"
               type="password"
+              onMouseDown = {this.handleMouseDown}
             />
           </div>
           <button
