@@ -104,7 +104,7 @@ app.post('/registration', (req, res) => {
   if (user) {
     return res.status(403).end();
   }
-
+  
   const id = 1 + db.users.reduce(
     (lastId, item) => item.id > lastId ? item.id : lastId, 0);
   db.users.push({ id, login, password });

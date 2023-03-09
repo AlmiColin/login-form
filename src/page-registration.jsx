@@ -1,81 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import { REGISTRATION_ERROR } from "./constants";
 import { registration } from "./authentication";
-import { Link } from "react-router-dom";
-import { withNavigate } from "./withNavigate";
+import { Link, useNavigate } from "react-router-dom";
 
-class PageRegistrationComponent extends React.Component {
-  state = {};
-  
-  handleSubmit = (e) => {
+export function PageRegistration() {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
+
+  const handleMouseDown = () => {
+    setMessage(null);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { navigate } = this.props;
-    const form = document.querySelector('form');
+    const form = e.target;
     const login = form.elements.login.value;
     const password = form.elements.password.value;
    
     if (!(login && password)) {
-      return this.setState({ message: REGISTRATION_ERROR });
+      return setMessage(REGISTRATION_ERROR);
     }
 
     registration(login, password)
       .then((res) => {
         navigate("/");
       })
-      .catch((res) => {
-        return this.setState({ message: REGISTRATION_ERROR });
-      });
-  }
- 
-  handleMouseDown = () => {
-    this.setState({ message: null });
-  }
-
-  render() {
-    const {message} = this.state;
-    return (
-      <div className="page-login layout-center">
-        <form
-          className="login-form"
-          onSubmit={this.handleSubmit}
-        >
-          <h1 className="form-title">Регистрация</h1>
-          {message && (
-            <div className="form-error">
-              {message}
-            </div>
-          )}
-          <div className="form-group">
-            <input
-              className="form-input"
-              name="login"
-              placeholder="Логин"
-              onMouseDown = {this.handleMouseDown}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              className="form-input"
-              name="password"
-              placeholder="Пароль"
-              type="password"
-              onMouseDown = {this.handleMouseDown}
-            />
-          </div>
-          <button
-            className="button"
-            name="enter"
-            onClick={this.handleSubmit}
-          >
-            Присоединиться
-          </button>
-          <div>
-            <Link className="links" to= {`/`}>Войти</Link>
-          </div>
-        </form>
-      </div>
-    );
+      .catch((response) => {
+        return setMessage(REGISTRATION_ERROR);
+      }
+    )
   };
-};
 
-export const PageRegistration = withNavigate(PageRegistrationComponent);
+  return (
+    <div className="page-login layout-center">
+      <form
+        className="login-form"
+        onSubmit={handleSubmit}
+      >
+        <h1 className="form-title">Регистрация</h1>
+        {message && (
+          <div className="form-error">
+            {message}
+          </div>
+        )}
+        <div className="form-group">
+          <input
+            className="form-input"
+            name="login"
+            placeholder="Логин"
+            onMouseDown={handleMouseDown}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            className="form-input"
+            name="password"
+            placeholder="Пароль"
+            type="password"
+            onMouseDown={handleMouseDown}
+          />
+        </div>
+        <button
+          className="button"
+          name="enter"
+        >
+          Присоединиться
+        </button>
+        <div>
+          <Link className="links" to={`/`}>Войти</Link>
+        </div>
+      </form>
+    </div>
+  );
+};

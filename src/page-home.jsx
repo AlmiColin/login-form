@@ -1,46 +1,44 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { logout, session } from "./authentication";
-import { withNavigate } from "./withNavigate";
+import { useNavigate } from "react-router-dom";
 
-class PageHomeComponent extends React.Component {
-  state = {};
-  
-  goMainPage = () => this.props.navigate('/');
-  handleExit = () => logout().then(this.goMainPage);
+export function PageHome() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  componentDidMount() {
-    if (!this.state.user) {
+  const goMainPage = useCallback(() => navigate('/'), [navigate]);
+
+  useEffect(() => {
+    if (!user) {
       session()
-        .then(user => this.setState({ user }))
-        .catch(this.goMainPage);
+        .then(setUser)
+        .catch(goMainPage);
     }
+  }, [user, goMainPage]);
+
+  if (!user) {
+    return null;
   };
 
-  render() {
-    if (!this.state.user) {
-     return null;
-    }
-    const { user: { login, avatarFile = "default.jpg"} } = this.state;
-    return (
-      <div className="page-login layout-center">
-        <div className="login-form">
-          <div className = "form-group home">      
-            <div>
-              <p className = "greeting">Привет, {login}</p>
-            </div>
-              <img class="avatar-image" src={`/avatars/${avatarFile}`} alt = "" />
-            <button
-              className="button exit"
-              name="exit"
-              onClick={this.handleExit}
-            >
-              Выход
-            </button>
+  const {login, avatarFile = "default.jpg"} = user;
+
+  return (
+    <div className="page-login layout-center">
+      <div className="login-form">
+        <div className = "form-group home">      
+          <div>
+            <p className = "greeting">Привет, {login}</p>
           </div>
+          <img className="avatar-image" src={`/avatars/${avatarFile}`} alt = "" />
+          <button
+            className="button exit"
+            name="exit"
+            onClick={() => logout().then(goMainPage)}
+          >
+            Выход
+          </button>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 };
-
-export const PageHome = withNavigate(PageHomeComponent);
