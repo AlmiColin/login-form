@@ -9,7 +9,7 @@ const db = require(DB_FILE);
 const port = 3001;
 const maxErrorCount = 3;
 const timeout = 10000;
-
+const sessions = {};
 const app = express();
 
 const saveDB = () => fs.writeFile(
@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 
 app.get('/session', (req, res) => {
   const token = req.cookies['access_token'];
-  const id = db.sessions[token];
+  const id = sessions[token];
   const user = db.users.find(item => item.id === id);
   if (!user) {
     return res.status(403).end();
@@ -76,9 +76,8 @@ app.post('/authentication', (req, res) => {
   }
 
   const token = crypto.randomBytes(16).toString('base64');
-  db.sessions[token] = user.id;
+  sessions[token] = user.id;
   ipStore.reset(req.ip);
-  saveDB();
 
   return res
     .cookie('access_token', token, {

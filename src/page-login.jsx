@@ -37,19 +37,19 @@ export function PageLogin() {
       return setMessage(LOGIN_ERROR);
     }
 
-  return authentication(login, password)
-    .then(() => navigate("/home-page"))
-    .catch((response) => {
-      const isDisabledButton = response?.status === 410;
-      const message = MESSAGES_BY_CODE[response?.status] || UNKNOWN_ERROR;
-      setIsDisabledButton(isDisabledButton);
-      setMessage(message);
-      setTime((isDisabledButton && +response?.body?.timeout) || 0); 
-    })
-    .then(() => 
-      setIsLoading(false),
-      setIsDisabledButton(isDisabledButton || false)
-    )
+    return authentication(login, password)
+      .then(() => navigate("/home-page"))
+      .catch((response) => {
+        const isDisabledButton = response?.status === 410;
+        const message = MESSAGES_BY_CODE[response?.status] || UNKNOWN_ERROR;
+        setIsDisabledButton(isDisabledButton);
+        setMessage(message);
+        setTime((isDisabledButton && +response?.body?.timeout) || 0); 
+      })
+      .then(() => 
+        setIsLoading(false),
+        setIsDisabledButton(isDisabledButton || false)
+      )
   };
 
   const handleMouseDown = () => {
@@ -74,6 +74,7 @@ export function PageLogin() {
               className="form-input"
               name="login"
               placeholder="Логин"
+              autoComplete="username"
               onMouseDown={handleMouseDown}
             />
           </div>
@@ -83,6 +84,7 @@ export function PageLogin() {
               name="password"
               placeholder="Пароль"
               type="password"
+              autoComplete="current-password"
               onMouseDown={handleMouseDown}
             />
           </div>
@@ -100,7 +102,7 @@ export function PageLogin() {
             <div className="request-message">{formatCountdown(time)}</div>
           )}
           <div>
-            <Link className="links" to={"/registration"}>Создать аккаунт</Link>
+            <Link className="links" to="/registration">Создать аккаунт</Link>
           </div>
         </form>
       </div>   

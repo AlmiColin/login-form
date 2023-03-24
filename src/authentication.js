@@ -29,13 +29,17 @@ export const registration = (login, password) => jsonPost('/registration', {
   password,
 });
 
-export const session = () => fetch('/session', {headers})
+export const session = () => fetch('/session', { headers })
   .then(res => {
     const { status } = res;
     if (status !== 200) {
       return Promise.reject(res);
     }
     return res.json();
+  })
+  .catch(err => {
+    if (err.status !== 500) {
+      throw err;
+    }
   });
-
   export const logout = () => fetch('/logout', {headers});
