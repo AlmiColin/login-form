@@ -1,0 +1,184 @@
+/* комментарий */
+
+
+body {
+margin: 0px;
+}
+
+.container {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+background-color : rgb(240 95 150);
+width : 100%;
+}
+
+.part-1 {
+display : flex;
+flex-direction:row;
+}
+
+.phrase {
+display: flex;
+margin-top: 5%;
+width:50%;
+}
+
+.name {
+font-family : "Montserrat";
+font-size : 40px; 
+color:white;
+margin: 10% 0 5% 10%;
+}
+
+.surname {
+font-family : "Montserrat";
+font-size : 20px; 
+color:white;
+margin-left:10%;
+}
+
+.stars {
+margin: 10% 0 0 5%;
+}
+
+
+.photos {
+position: relative;
+display:flex;
+justify-content:flex-end;
+width:50%;
+}
+
+.my-photo {
+position: absolute;
+z-index: 2;
+margin: 15% 15% 0% 0%;
+}
+
+.nastya {
+height:400px;
+}
+
+.leaves {
+z-index:1;
+opacity: 30%;
+}
+
+.this-leaves{
+height:70%;
+}
+
+
+.part-2 {
+margin-top: -60%;
+margin-left: 10%;
+display:flex;
+flex-direction: row;
+}
+
+
+.first-column{
+margin: -20% 0% 0% 0%;
+width:50%;
+}
+
+.big {
+font-family: "Montserrat";
+font-size:200%;
+color:white;
+}
+
+.text {
+margin: 0% 0% 3% 0%;
+color:white;
+}
+
+.education {
+margin-top:15%;
+color:white;
+}
+
+.icons {
+height:8%;
+margin-left:-6%;
+}
+
+.second-column {
+z-index:3;
+width:50%;
+}
+
+.figure {
+border:solid;
+border-color:white;
+width:300px;
+height:50px;
+border-radius:40px;
+display:flex;
+justify-content: center;
+margin-top: 2%;
+}
+
+.skills {
+display:flex;
+flex-direction:column;
+align-items:center;
+color:white;
+}
+
+.interest {
+display:flex;
+flex-direction:column;
+align-items:center;
+color:white;
+margin-top:10%;
+}
+
+.signs {
+width: 80%;
+}
+
+
+.part-3 {
+display: flex;
+flex-direction:column;
+justify-content: center;
+margin: 0% 10% 0% 10%;
+}
+
+.stripe {
+width: 99%;
+margin-bottom:5%;
+}
+
+.stripe-2 {
+width: 99%;
+margin-top:5%;
+}
+
+.part-4 {
+display : flex;
+justify-content:flex-start;
+flex-direction: row;
+}
+
+
+.wrapper {
+position:relative;
+}
+
+.contacts {
+position: absolute;
+z-index:3;
+}
+
+.bottom-leaves {
+position: absolute;
+z-index:2;
+
+}
+.leaves-2 {
+opacity:30%;
+width:70%;
+}
